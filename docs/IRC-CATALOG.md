@@ -8,7 +8,7 @@ The reusable application definitions belong in the Ploos-AS `ircsh` project. She
 
 Clients: Irssi, WeeChat and BitchX.
 
-Bouncers: ZNC, soju, psyBNC and muh.
+Bouncers: ZNC, soju, psyBNC, muh and shroudBNC (sBNC). shroudBNC is treated as a legacy/classic service and requires enhanced build, runtime and security qualification before production use.
 
 Bots: Eggdrop, EnergyMech and Psotnic.
 
