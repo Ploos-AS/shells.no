@@ -13,6 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Account provisioning static checks
+
+        run: sh tests/test-account-static.sh
+
+
       - name: Validate M0 repository
         shell: bash
         run: |
