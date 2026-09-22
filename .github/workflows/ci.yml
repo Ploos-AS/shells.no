@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  repository:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate M0 repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s README.md
+          test -s LICENSE
+          test -s docs/ARCHITECTURE.md
+          test -s docs/THREAT-MODEL.md
+          test -s docs/ROADMAP.md
+          test -s deploy/README.md
+          if grep -RInE --exclude-dir=.git '(BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY|ghp_[A-Za-z0-9]{20,})' .; then
+            echo 'Potential secret material found.'
+            exit 1
+          fi
+          echo 'M0 repository validation passed.'
