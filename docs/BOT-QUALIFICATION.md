@@ -9,6 +9,7 @@ Shells.no treats IRC bots as first-class managed services. A catalog entry is no
 - Psotnic
 - Limnoria
 - Sopel
+- Dancer (legacy/classic; enhanced qualification)
 
 ## Qualification gates
 
