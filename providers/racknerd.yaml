@@ -1,0 +1,46 @@
+provider: RackNerd
+status: CONTACTED
+checked_at: 2026-09-22
+
+commercial:
+  shell_hosting_allowed: pending_provider_confirmation
+  irc_clients_allowed: pending_provider_confirmation
+  irc_bouncers_allowed: pending_provider_confirmation
+  irc_bots_allowed: pending_provider_confirmation
+  multiple_customers_allowed: pending_provider_confirmation
+  resale_or_managed_service_allowed: pending_provider_confirmation
+  evidence:
+    - "Pre-sales inquiry sent 2026-09-22."
+
+network:
+  public_ipv4_count: 1
+  ipv4_included: expected
+  native_ipv6: available_in_selected_locations
+  ipv6_prefix: null
+  ipv6_address_limit: "up to 100 reported for eligible VPS locations; verify for selected plan"
+  multiple_source_ipv6: pending_provider_confirmation
+  rdns_ipv4: verify
+  rdns_ipv6: pending_provider_confirmation
+  delegated_reverse_dns: verify
+
+automation:
+  api: verify
+  terraform: verify
+  cloud_init: verify
+  snapshots: verify
+  rescue_console: verify
+
+qualification:
+  policy_confirmed: false
+  ipv4_irc: pending
+  ipv6_irc: pending
+  multi_source_ipv6: pending
+  rdns: pending
+  rootless_runtime: pending
+  quotas: pending
+  backup_restore: pending
+
+notes:
+  - "Very interesting low-cost candidate for the first pilot node."
+  - "Promotional pricing must be evaluated separately from sustainable normal pricing."
+  - "Confirm IPv6 availability for the exact European location and plan before purchase."
