@@ -57,3 +57,5 @@
 BBS, retro-development and developer shell profiles may follow, but must not delay a small, reliable IRC service.
 
 - [x] initial IRC managed-service catalog (clients, bouncers and bots defined; runtime qualification pending)
+
+- [ ] managed-service lifecycle (ZNC reference implementation added; VPS runtime qualification and remaining catalog adapters pending)
