@@ -14,11 +14,16 @@ def="services/$service.env"
 command -v "$SERVICE_BINARY" >/dev/null 2>&1 || die "$SERVICE_BINARY binary not installed"
 
 unit="shells-$service.service"; udir="/home/$login/.config/systemd/user"; unitfile="$udir/$unit"
+uid="$(id -u "$login")"; account_id="u-$uid"
+service_root="/srv/shells/users/$account_id/services/$service"
 runusercmd(){ uid="$(id -u "$login")"; runuser -u "$login" -- env XDG_RUNTIME_DIR="/run/user/$uid" "$@"; }
 
 install_service(){
  [ "$(id -u)" -eq 0 ] || die "install must run as root"
  install -d -o "$login" -g "$(id -gn "$login")" -m 0700 "$udir"
+ for d in config data logs run; do
+   install -d -o "$login" -g "$(id -gn "$login")" -m 0700 "$service_root/$d"
+ done
  binary="$(command -v "$SERVICE_BINARY")"
  cat >"$unitfile" <<EOF
 [Unit]
@@ -27,6 +32,12 @@ After=network-online.target
 Wants=network-online.target
 [Service]
 Type=simple
+WorkingDirectory=$service_root/data
+Environment=SHELLS_SERVICE_ROOT=$service_root
+Environment=SHELLS_CONFIG_DIR=$service_root/config
+Environment=SHELLS_DATA_DIR=$service_root/data
+Environment=SHELLS_LOG_DIR=$service_root/logs
+Environment=SHELLS_RUN_DIR=$service_root/run
 ExecStart=$binary $SERVICE_ARGS
 Restart=on-failure
 RestartSec=5
