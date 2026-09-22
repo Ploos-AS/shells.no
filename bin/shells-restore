@@ -1,0 +1,15 @@
+#!/bin/sh
+set -eu
+die(){ echo "error: $*" >&2; exit 1; }
+[ "$(id -u)" -eq 0 ] || die "must run as root"
+[ "$#" -eq 2 ] || die "usage: shells-restore LOGIN ARCHIVE"
+login="$1"; archive="$2"; id "$login" >/dev/null 2>&1 || die "unknown account"
+[ -f "$archive" ] || die "archive missing"
+[ -f "$archive.sha256" ] || die "checksum missing"
+(cd "$(dirname "$archive")" && sha256sum -c "$(basename "$archive").sha256")
+uid="$(id -u "$login")"; aid="u-$uid"; root="/srv/shells/users/$aid"
+mkdir -p "$root"
+tar -tzf "$archive" | grep -Eq '(^/|(^|/)\.\.(/|$))' && die "unsafe archive path"
+tar -C "$root" -xzf "$archive"
+chown -R "$login:$(id -gn "$login")" "$root"
+echo "restored $archive for $login"
