@@ -21,7 +21,7 @@
 - [x] create machine-readable provider records
 - [x] contact RackNerd and netcup for policy/network clarification
 - [ ] qualify first production VPS provider
-- [ ] repeatable node bootstrap
+- [x] repeatable node bootstrap (initial M1 implementation)
 - [ ] account provisioning
 - [ ] per-user isolation and quotas
 - [ ] initial `ircsh` client/bouncer/bot catalog
