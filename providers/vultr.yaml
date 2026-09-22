@@ -1,0 +1,43 @@
+provider: Vultr
+status: CANDIDATE
+checked_at: 2026-09-22
+
+commercial:
+  shell_hosting_allowed: verify
+  irc_clients_allowed: verify
+  irc_bouncers_allowed: verify
+  irc_bots_allowed: verify
+  multiple_customers_allowed: verify
+  resale_or_managed_service_allowed: verify
+  evidence: []
+
+network:
+  public_ipv4_count: 1
+  ipv4_included: verify_exact_plan
+  native_ipv6: true
+  ipv6_prefix: verify
+  ipv6_address_limit: verify
+  multiple_source_ipv6: verify
+  rdns_ipv4: true
+  rdns_ipv6: true
+  delegated_reverse_dns: verify
+
+automation:
+  api: true
+  terraform: true
+  cloud_init: true
+  snapshots: true
+  rescue_console: verify
+
+qualification:
+  policy_confirmed: false
+  ipv4_irc: pending
+  ipv6_irc: pending
+  multi_source_ipv6: pending
+  rdns: pending
+  rootless_runtime: pending
+  quotas: pending
+  backup_restore: pending
+
+notes:
+  - "Strong automation candidate; particularly interesting for automated IPv6/PTR lifecycle."
