@@ -22,6 +22,11 @@ pricing:
   ipv4_extra_cost: null
   notes: null
 
+operating_system:
+  debian_available: unknown
+  ubuntu_lts_available: unknown
+  selected: null
+
 compute:
   virtualization: null
   vcpu: null
