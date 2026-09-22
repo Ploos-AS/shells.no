@@ -23,7 +23,7 @@
 - [ ] qualify first production VPS provider
 - [x] repeatable node bootstrap (initial M1 implementation)
 - [x] account provisioning (initial M1 implementation)
-- [ ] per-user isolation and quotas (CPU/RAM/PID implemented; disk quota pending)
+- [ ] per-user isolation and quotas (CPU/RAM/PID implemented; disk quota automation added, pilot enforcement test pending)
 - [ ] initial `ircsh` client/bouncer/bot catalog
 - [ ] persistent home/service storage
 - [ ] SSH key lifecycle (initial key install implemented)
