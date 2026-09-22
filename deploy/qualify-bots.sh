@@ -6,7 +6,7 @@ die(){ echo "error: $*" >&2; exit 1; }
 login="$1"; shift
 id "$login" >/dev/null 2>&1 || die "unknown account: $login"
 
-bots="${*:-eggdrop energymech psotnic limnoria sopel}"
+bots="${*:-eggdrop energymech psotnic limnoria sopel dancer}"
 fail=0
 
 printf '%-14s %-10s %-10s %-10s\n' BOT DEFINITION BINARY STORAGE
