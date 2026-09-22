@@ -26,7 +26,7 @@
 - [ ] per-user isolation and quotas (CPU/RAM/PID implemented; disk quota automation added, pilot enforcement test pending)
 - [ ] initial `ircsh` client/bouncer/bot catalog
 - [ ] persistent home/service storage
-- [ ] SSH key lifecycle (initial key install implemented)
+- [x] SSH key lifecycle (add/list/remove/rotate)
 - [ ] backup + restore test
 - [ ] health/capacity report
 - [ ] operator CLI
