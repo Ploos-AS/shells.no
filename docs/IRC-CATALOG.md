@@ -10,7 +10,7 @@ Clients: Irssi, WeeChat and BitchX.
 
 Bouncers: ZNC, soju, psyBNC, muh and shroudBNC (sBNC). shroudBNC is treated as a legacy/classic service and requires enhanced build, runtime and security qualification before production use.
 
-Bots: Eggdrop, EnergyMech, Limnoria, Sopel and Psotnic.
+Bots: Eggdrop, EnergyMech, Limnoria, Sopel, Dancer and Psotnic. Dancer is treated as a legacy/classic service and requires enhanced build, runtime and security qualification before production use.
 
 ## Persistence
 
