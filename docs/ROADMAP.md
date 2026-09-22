@@ -60,3 +60,4 @@ BBS, retro-development and developer shell profiles may follow, but must not del
 
 - [ ] managed-service lifecycle (ZNC reference implementation added; VPS runtime qualification and remaining catalog adapters pending)
 - [ ] backup/restore primitives (local archive + checksum + safe restore implemented; off-node encryption/retention and clean-node restore qualification pending)
+- [ ] IRC bot qualification matrix: Eggdrop, EnergyMech, Psotnic, Limnoria, Sopel (catalogued; Debian build/runtime/network/isolation/restore/24h soak qualification pending)
