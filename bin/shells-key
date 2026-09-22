@@ -1,0 +1,85 @@
+#!/bin/sh
+set -eu
+
+STATE_ROOT="${SHELLS_STATE_ROOT:-/srv/shells/state}"
+
+die(){ echo "error: $*" >&2; exit 1; }
+need_root(){ [ "$(id -u)" -eq 0 ] || die "must run as root"; }
+valid_login(){ printf '%s' "$1" | grep -Eq '^[a-z][a-z0-9_-]{2,31}$'; }
+
+keydir(){
+  login="$1"
+  echo "/home/$login/.ssh"
+}
+
+prepare(){
+  login="$1"
+  id "$login" >/dev/null 2>&1 || die "unknown account: $login"
+  d="$(keydir "$login")"
+  install -d -o "$login" -g "$(id -gn "$login")" -m 0700 "$d"
+  touch "$d/authorized_keys"
+  chown "$login:$(id -gn "$login")" "$d/authorized_keys"
+  chmod 0600 "$d/authorized_keys"
+}
+
+fingerprint(){
+  ssh-keygen -lf "$1" 2>/dev/null | awk '{print $2}'
+}
+
+add(){
+  need_root; login="$1"; file="$2"
+  [ -f "$file" ] || die "key file not found"
+  prepare "$login"
+  d="$(keydir "$login")"
+  fp="$(fingerprint "$file")"
+  [ -n "$fp" ] || die "invalid SSH public key"
+  if ssh-keygen -lf "$d/authorized_keys" 2>/dev/null | grep -q "$fp"; then
+    die "key already installed: $fp"
+  fi
+  cat "$file" >>"$d/authorized_keys"
+  printf '\n' >>"$d/authorized_keys"
+  echo "added $fp for $login"
+}
+
+list(){
+  login="$1"; id "$login" >/dev/null 2>&1 || die "unknown account"
+  f="$(keydir "$login")/authorized_keys"
+  [ -s "$f" ] || exit 0
+  ssh-keygen -lf "$f"
+}
+
+remove(){
+  need_root; login="$1"; target="$2"; prepare "$login"
+  f="$(keydir "$login")/authorized_keys"
+  tmp="$(mktemp)"
+  trap 'rm -f "$tmp"' EXIT
+  found=0
+  while IFS= read -r line; do
+    [ -n "$line" ] || continue
+    printf '%s\n' "$line" >"$tmp.key"
+    fp="$(fingerprint "$tmp.key" || true)"
+    rm -f "$tmp.key"
+    if [ "$fp" = "$target" ]; then found=1; continue; fi
+    printf '%s\n' "$line"
+  done <"$f" >"$tmp"
+  [ "$found" -eq 1 ] || die "fingerprint not found"
+  install -o "$login" -g "$(id -gn "$login")" -m 0600 "$tmp" "$f"
+  echo "removed $target for $login"
+}
+
+rotate(){
+  need_root; login="$1"; old="$2"; newfile="$3"
+  add "$login" "$newfile"
+  remove "$login" "$old"
+  echo "rotation complete for $login"
+}
+
+[ "$#" -ge 2 ] || die "usage: shells-key {add|list|remove|rotate} LOGIN ..."
+cmd="$1"; login="$2"; valid_login "$login" || die "invalid login"
+case "$cmd" in
+ add) [ "$#" -eq 3 ] || die "add LOGIN KEYFILE"; add "$login" "$3" ;;
+ list) [ "$#" -eq 2 ] || die "list LOGIN"; list "$login" ;;
+ remove) [ "$#" -eq 3 ] || die "remove LOGIN FINGERPRINT"; remove "$login" "$3" ;;
+ rotate) [ "$#" -eq 4 ] || die "rotate LOGIN OLD_FINGERPRINT NEW_KEYFILE"; rotate "$login" "$3" "$4" ;;
+ *) die "unknown command: $cmd" ;;
+esac
