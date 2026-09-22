@@ -51,6 +51,10 @@ EOF
   fi
 
   passwd -l "$login" >/dev/null 2>&1 || true
+  if [ -x deploy/install-account-limits.sh ]; then
+    sh deploy/install-account-limits.sh "$login"
+  fi
+
   echo "created $login ($account_id, uid=$uid)"
 }
 
