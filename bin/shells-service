@@ -6,20 +6,28 @@ cmd="$1"; login="$2"; service="$3"
 printf '%s' "$login" | grep -Eq '^[a-z][a-z0-9_-]{2,31}$' || die "invalid login"
 printf '%s' "$service" | grep -Eq '^[a-z][a-z0-9_-]{1,31}$' || die "invalid service"
 id "$login" >/dev/null 2>&1 || die "unknown account"
+
+def="services/$service.env"
+[ -r "$def" ] || die "unknown managed service: $service"
+. "$def"
+[ "$SERVICE_ID" = "$service" ] || die "service definition ID mismatch"
+command -v "$SERVICE_BINARY" >/dev/null 2>&1 || die "$SERVICE_BINARY binary not installed"
+
 unit="shells-$service.service"; udir="/home/$login/.config/systemd/user"; unitfile="$udir/$unit"
 runusercmd(){ uid="$(id -u "$login")"; runuser -u "$login" -- env XDG_RUNTIME_DIR="/run/user/$uid" "$@"; }
+
 install_service(){
  [ "$(id -u)" -eq 0 ] || die "install must run as root"
- case "$service" in znc) command -v znc >/dev/null 2>&1 || die "znc binary not installed"; exec_cmd="$(command -v znc) -f" ;; *) die "service installer not implemented yet: $service" ;; esac
  install -d -o "$login" -g "$(id -gn "$login")" -m 0700 "$udir"
+ binary="$(command -v "$SERVICE_BINARY")"
  cat >"$unitfile" <<EOF
 [Unit]
-Description=Shells.no managed IRC service
+Description=Shells.no managed service: $SERVICE_ID
 After=network-online.target
 Wants=network-online.target
 [Service]
 Type=simple
-ExecStart=$exec_cmd
+ExecStart=$binary $SERVICE_ARGS
 Restart=on-failure
 RestartSec=5
 NoNewPrivileges=yes
