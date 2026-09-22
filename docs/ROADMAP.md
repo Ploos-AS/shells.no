@@ -12,6 +12,10 @@
 
 ## M1 — Single-node prototype
 
+- [x] define M1 single-node architecture and acceptance criteria
+- [x] define product principles and provider portability
+- [x] define capacity/cost measurement model
+
 - [ ] choose supported Linux baseline
 - [x] define VPS provider qualification requirements
 - [x] create machine-readable provider records
