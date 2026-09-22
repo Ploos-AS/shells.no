@@ -22,11 +22,11 @@
 - [x] contact RackNerd and netcup for policy/network clarification
 - [ ] qualify first production VPS provider
 - [x] repeatable node bootstrap (initial M1 implementation)
-- [ ] account provisioning
+- [x] account provisioning (initial M1 implementation)
 - [ ] per-user isolation and quotas
 - [ ] initial `ircsh` client/bouncer/bot catalog
 - [ ] persistent home/service storage
-- [ ] SSH key lifecycle
+- [ ] SSH key lifecycle (initial key install implemented)
 - [ ] backup + restore test
 - [ ] health/capacity report
 - [ ] operator CLI
