@@ -41,6 +41,13 @@ services:
     category: bouncer
     persistence: systemd-user
     status: planned
+  - id: shroudbnc
+    name: shroudBNC
+    category: bouncer
+    persistence: systemd-user
+    status: planned
+    lifecycle: legacy
+    qualification: enhanced
 
   - id: eggdrop
     name: Eggdrop
