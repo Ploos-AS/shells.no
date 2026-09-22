@@ -1,0 +1,66 @@
+version: 1
+source_project:
+  name: ircsh
+  repository: Ploos-AS/ircsh
+  integration: managed-service-definitions
+
+services:
+  - id: irssi
+    name: Irssi
+    category: client
+    persistence: tmux
+    status: planned
+  - id: weechat
+    name: WeeChat
+    category: client
+    persistence: tmux
+    status: planned
+  - id: bitchx
+    name: BitchX
+    category: client
+    persistence: tmux
+    status: planned
+
+  - id: znc
+    name: ZNC
+    category: bouncer
+    persistence: systemd-user
+    status: planned
+  - id: soju
+    name: soju
+    category: bouncer
+    persistence: systemd-user
+    status: planned
+  - id: psybnc
+    name: psyBNC
+    category: bouncer
+    persistence: systemd-user
+    status: planned
+  - id: muh
+    name: muh
+    category: bouncer
+    persistence: systemd-user
+    status: planned
+
+  - id: eggdrop
+    name: Eggdrop
+    category: bot
+    persistence: systemd-user
+    status: planned
+  - id: energymech
+    name: EnergyMech
+    category: bot
+    persistence: systemd-user
+    status: planned
+  - id: psotnic
+    name: Psotnic
+    category: bot
+    persistence: systemd-user
+    status: planned
+
+policy:
+  arbitrary_customer_containers: false
+  privileged_services: false
+  host_network_default: false
+  service_count_enforced: true
+  ipv6_identity_aware: true
