@@ -70,6 +70,13 @@ services:
     persistence: systemd-user
     status: planned
 
+  - id: dancer
+    name: Dancer
+    category: bot
+    persistence: systemd-user
+    status: planned
+    lifecycle: legacy
+    qualification: enhanced
   - id: psotnic
     name: Psotnic
     category: bot
