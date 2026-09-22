@@ -1,0 +1,60 @@
+# Shells.no provider qualification record schema/example.
+# This is intentionally simple YAML so it can evolve during M1.
+
+provider: example
+status: CANDIDATE
+checked_at: null
+
+commercial:
+  shell_hosting_allowed: unknown
+  irc_clients_allowed: unknown
+  irc_bouncers_allowed: unknown
+  irc_bots_allowed: unknown
+  multiple_customers_allowed: unknown
+  resale_or_managed_service_allowed: unknown
+  evidence: []
+
+pricing:
+  plan: null
+  monthly_price: null
+  currency: null
+  billing_term: null
+  ipv4_extra_cost: null
+  notes: null
+
+compute:
+  virtualization: null
+  vcpu: null
+  ram_gb: null
+  storage_gb: null
+
+network:
+  public_ipv4_count: null
+  ipv4_included: unknown
+  native_ipv6: unknown
+  ipv6_prefix: null
+  ipv6_address_limit: null
+  multiple_source_ipv6: unknown
+  rdns_ipv4: unknown
+  rdns_ipv6: unknown
+  delegated_reverse_dns: unknown
+  traffic_allowance: null
+
+automation:
+  api: unknown
+  terraform: unknown
+  cloud_init: unknown
+  snapshots: unknown
+  rescue_console: unknown
+
+qualification:
+  policy_confirmed: false
+  ipv4_irc: pending
+  ipv6_irc: pending
+  multi_source_ipv6: pending
+  rdns: pending
+  rootless_runtime: pending
+  quotas: pending
+  backup_restore: pending
+
+notes: []
