@@ -55,3 +55,5 @@
 ## Future
 
 BBS, retro-development and developer shell profiles may follow, but must not delay a small, reliable IRC service.
+
+- [x] initial IRC managed-service catalog (clients, bouncers and bots defined; runtime qualification pending)
