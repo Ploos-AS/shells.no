@@ -1,0 +1,42 @@
+#!/bin/sh
+set -eu
+die(){ echo "error: $*" >&2; exit 1; }
+[ "$#" -ge 3 ] || die "usage: shells-service {install|start|stop|restart|status|logs} LOGIN SERVICE"
+cmd="$1"; login="$2"; service="$3"
+printf '%s' "$login" | grep -Eq '^[a-z][a-z0-9_-]{2,31}$' || die "invalid login"
+printf '%s' "$service" | grep -Eq '^[a-z][a-z0-9_-]{1,31}$' || die "invalid service"
+id "$login" >/dev/null 2>&1 || die "unknown account"
+unit="shells-$service.service"; udir="/home/$login/.config/systemd/user"; unitfile="$udir/$unit"
+runusercmd(){ uid="$(id -u "$login")"; runuser -u "$login" -- env XDG_RUNTIME_DIR="/run/user/$uid" "$@"; }
+install_service(){
+ [ "$(id -u)" -eq 0 ] || die "install must run as root"
+ case "$service" in znc) command -v znc >/dev/null 2>&1 || die "znc binary not installed"; exec_cmd="$(command -v znc) -f" ;; *) die "service installer not implemented yet: $service" ;; esac
+ install -d -o "$login" -g "$(id -gn "$login")" -m 0700 "$udir"
+ cat >"$unitfile" <<EOF
+[Unit]
+Description=Shells.no managed IRC service
+After=network-online.target
+Wants=network-online.target
+[Service]
+Type=simple
+ExecStart=$exec_cmd
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=no
+[Install]
+WantedBy=default.target
+EOF
+ chown "$login:$(id -gn "$login")" "$unitfile"; chmod 0600 "$unitfile"
+ loginctl enable-linger "$login"; runusercmd systemctl --user daemon-reload; runusercmd systemctl --user enable "$unit"
+ echo "installed $service for $login"
+}
+case "$cmd" in
+ install) install_service ;;
+ start|stop|restart) [ "$(id -u)" -eq 0 ] || die "$cmd must run as root"; [ -f "$unitfile" ] || die "service not installed"; runusercmd systemctl --user "$cmd" "$unit" ;;
+ status) [ "$(id -u)" -eq 0 ] || die "status must run as root"; runusercmd systemctl --user --no-pager status "$unit" ;;
+ logs) [ "$(id -u)" -eq 0 ] || die "logs must run as root"; uid="$(id -u "$login")"; journalctl _UID="$uid" --user-unit="$unit" -n 100 --no-pager ;;
+ *) die "unknown command: $cmd" ;;
+esac
