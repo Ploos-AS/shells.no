@@ -4,7 +4,9 @@ M1 turns the M0 contracts into a reproducible single-node Shells.no prototype.
 
 ## Baseline
 
-The reference node will target Debian stable on a KVM VPS with:
+The reference node targets **Debian stable** on a KVM VPS. Debian is the production preference. **Ubuntu LTS** is the secondary compatibility target and may be used only when a provider does not support a suitable Debian image.
+
+The baseline requires:
 
 - one public IPv4
 - native IPv6 with multiple usable source addresses
