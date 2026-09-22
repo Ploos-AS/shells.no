@@ -1,0 +1,70 @@
+#!/bin/sh
+set -eu
+
+STATE_ROOT="${SHELLS_STATE_ROOT:-/srv/shells/state}"
+USER_ROOT="${SHELLS_USER_ROOT:-/srv/shells/users}"
+GROUP="${SHELLS_USER_GROUP:-shells-users}"
+
+die() { echo "error: $*" >&2; exit 1; }
+need_root() { [ "$(id -u)" -eq 0 ] || die "must run as root"; }
+valid_login() { printf '%s' "$1" | grep -Eq '^[a-z][a-z0-9_-]{2,31}$'; }
+
+usage() {
+  cat <<EOF
+Usage:
+  shells-admin account create LOGIN [SSH_PUBLIC_KEY_FILE]
+  shells-admin account show LOGIN
+EOF
+}
+
+account_create() {
+  need_root
+  login="$1"
+  keyfile="${2:-}"
+  valid_login "$login" || die "invalid login name"
+  id "$login" >/dev/null 2>&1 && die "account already exists: $login"
+  getent group "$GROUP" >/dev/null 2>&1 || die "missing group $GROUP; run bootstrap first"
+
+  useradd --create-home --shell /bin/bash --gid "$GROUP" "$login"
+  uid="$(id -u "$login")"
+  gid="$(id -g "$login")"
+  account_id="u-$uid"
+  root="$USER_ROOT/$account_id"
+
+  install -d -o "$login" -g "$GROUP" -m 0700 "$root"
+  install -d -o "$login" -g "$GROUP" -m 0700 "$root/config" "$root/data" "$root/services"
+  install -d -o root -g root -m 0755 "$STATE_ROOT/accounts"
+
+  umask 077
+  cat >"$STATE_ROOT/accounts/$login.env" <<EOF
+SHELLS_ACCOUNT_ID=$account_id
+SHELLS_LOGIN=$login
+SHELLS_UID=$uid
+SHELLS_GID=$gid
+SHELLS_USER_ROOT=$root
+EOF
+
+  if [ -n "$keyfile" ]; then
+    [ -f "$keyfile" ] || die "SSH public key file not found: $keyfile"
+    install -d -o "$login" -g "$GROUP" -m 0700 "/home/$login/.ssh"
+    install -o "$login" -g "$GROUP" -m 0600 "$keyfile" "/home/$login/.ssh/authorized_keys"
+  fi
+
+  passwd -l "$login" >/dev/null 2>&1 || true
+  echo "created $login ($account_id, uid=$uid)"
+}
+
+account_show() {
+  login="$1"
+  valid_login "$login" || die "invalid login name"
+  f="$STATE_ROOT/accounts/$login.env"
+  [ -r "$f" ] || die "unknown managed account: $login"
+  cat "$f"
+}
+
+[ "$#" -ge 2 ] || { usage; exit 2; }
+case "$1:$2" in
+  account:create) [ "$#" -le 4 ] || die "too many arguments"; account_create "${3:-}" "${4:-}" ;;
+  account:show) [ "$#" -eq 3 ] || die "account show requires LOGIN"; account_show "$3" ;;
+  *) usage; exit 2 ;;
+esac
