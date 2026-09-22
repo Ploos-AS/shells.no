@@ -9,9 +9,17 @@ Current initial set:
 - Vultr — CANDIDATE
 - Hetzner — CANDIDATE
 - Scaleway — CANDIDATE
+- ServerHost — CANDIDATE
+- CloudServer — CANDIDATE
+- DediRock — CANDIDATE
 
 RackNerd and netcup received the same pre-sales questions on 2026-09-22 covering commercial multi-user shell hosting, IRC clients/bouncers/bots, IPv4, IPv6, multiple source addresses, PTR/rDNS and restrictions.
 
 Do not promote a provider to QUALIFIED based only on marketing pages. Policy confirmation and a real technical pilot are required.
 
 See `docs/PROVIDER-REQUIREMENTS.md`.
+
+
+## Low-cost candidate intake
+
+ServerHost, CloudServer and DediRock were added on 2026-09-22 from user-supplied LowEndBox promotional offers around USD 21–24/year. Promotional specifications are recorded as leads, not verified production facts. Each candidate must pass the same policy, IPv6/PTR and technical qualification as all other providers before use.
