@@ -1,0 +1,45 @@
+provider: netcup
+status: CONTACTED
+checked_at: 2026-09-22
+
+commercial:
+  shell_hosting_allowed: pending_provider_confirmation
+  irc_clients_allowed: pending_provider_confirmation
+  irc_bouncers_allowed: pending_provider_confirmation
+  irc_bots_allowed: pending_provider_confirmation
+  multiple_customers_allowed: pending_provider_confirmation
+  resale_or_managed_service_allowed: pending_provider_confirmation
+  evidence:
+    - "Pre-sales inquiry sent 2026-09-22."
+
+network:
+  public_ipv4_count: 1
+  ipv4_included: verify_exact_plan
+  native_ipv6: true
+  ipv6_prefix: "/64 on relevant VPS configurations; verify exact plan"
+  ipv6_address_limit: prefix_based
+  multiple_source_ipv6: pending_provider_confirmation
+  rdns_ipv4: verify
+  rdns_ipv6: pending_provider_confirmation
+  delegated_reverse_dns: verify
+
+automation:
+  api: verify
+  terraform: verify
+  cloud_init: verify
+  snapshots: verify
+  rescue_console: verify
+
+qualification:
+  policy_confirmed: false
+  ipv4_irc: pending
+  ipv6_irc: pending
+  multi_source_ipv6: pending
+  rdns: pending
+  rootless_runtime: pending
+  quotas: pending
+  backup_restore: pending
+
+notes:
+  - "Strong candidate because a routed IPv6 /64 is especially attractive for IRC identities and vanity hosts."
+  - "Confirm commercial multi-user IRC shell use and reverse-DNS capabilities before purchase."
