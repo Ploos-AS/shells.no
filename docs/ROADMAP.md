@@ -59,3 +59,4 @@ BBS, retro-development and developer shell profiles may follow, but must not del
 - [x] initial IRC managed-service catalog (clients, bouncers and bots defined; runtime qualification pending)
 
 - [ ] managed-service lifecycle (ZNC reference implementation added; VPS runtime qualification and remaining catalog adapters pending)
+- [ ] backup/restore primitives (local archive + checksum + safe restore implemented; off-node encryption/retention and clean-node restore qualification pending)
