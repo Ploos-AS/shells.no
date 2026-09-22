@@ -13,6 +13,10 @@
 ## M1 — Single-node prototype
 
 - [ ] choose supported Linux baseline
+- [x] define VPS provider qualification requirements
+- [x] create machine-readable provider records
+- [x] contact RackNerd and netcup for policy/network clarification
+- [ ] qualify first production VPS provider
 - [ ] repeatable node bootstrap
 - [ ] account provisioning
 - [ ] per-user isolation and quotas
