@@ -1,0 +1,53 @@
+provider: CloudServer
+status: CANDIDATE
+checked_at: 2026-09-22
+
+commercial:
+  shell_hosting_allowed: verify
+  irc_clients_allowed: verify
+  irc_bouncers_allowed: verify
+  irc_bots_allowed: verify
+  multiple_customers_allowed: verify
+  resale_or_managed_service_allowed: verify
+  evidence: []
+
+pricing:
+  plan: "LEB Special 2GB KVM VPS"
+  annual_price: 23.88
+  currency: USD
+  billing_term: annual
+  promotional: true
+  notes: "User-supplied LowEndBox offer; current availability and renewal terms must be verified."
+
+compute:
+  virtualization: KVM
+  vcpu: 1
+  ram_gb: 2
+  storage_gb: 50
+
+network:
+  public_ipv4_count: 1
+  ipv4_included: true
+  native_ipv6: verify
+  ipv6_prefix: null
+  ipv6_address_limit: verify
+  multiple_source_ipv6: verify
+  rdns_ipv4: verify
+  rdns_ipv6: verify
+  delegated_reverse_dns: verify
+  traffic_allowance: "5 TB/month advertised"
+
+qualification:
+  policy_confirmed: false
+  ipv4_irc: pending
+  ipv6_irc: pending
+  multi_source_ipv6: pending
+  rdns: pending
+  rootless_runtime: pending
+  quotas: pending
+  backup_restore: pending
+
+notes:
+  - "Low-cost KVM candidate with 2 GB RAM, 50 GB storage and dedicated IPv4."
+  - "Advertised offer location is New York."
+  - "IPv6 allocation and commercial IRC shell policy must be confirmed."
