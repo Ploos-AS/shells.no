@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+import argparse, ipaddress, json, os, pwd, sys
+STATE=os.environ.get("SHELLS_IPV6_STATE","/var/lib/shells-no/ipv6.json")
+PREFIX=os.environ.get("SHELLS_IPV6_PREFIX","")
+
+def load():
+    try:
+        with open(STATE) as f: return json.load(f)
+    except FileNotFoundError: return {"allocations":{}}
+
+def save(s):
+    os.makedirs(os.path.dirname(STATE),exist_ok=True)
+    tmp=STATE+".tmp"
+    with open(tmp,"w") as f: json.dump(s,f,indent=2,sort_keys=True); f.write("\n")
+    os.chmod(tmp,0o600); os.replace(tmp,STATE)
+
+def account(login):
+    p=pwd.getpwnam(login); return f"u-{p.pw_uid}"
+
+def main():
+    ap=argparse.ArgumentParser()
+    sub=ap.add_subparsers(dest="cmd",required=True)
+    a=sub.add_parser("allocate"); a.add_argument("login"); a.add_argument("--count",type=int,default=1)
+    l=sub.add_parser("list"); l.add_argument("login")
+    r=sub.add_parser("release"); r.add_argument("login")
+    args=ap.parse_args(); aid=account(args.login); s=load()
+    if args.cmd=="list":
+        for x in s["allocations"].get(aid,[]): print(x)
+        return
+    if args.cmd=="release":
+        s["allocations"].pop(aid,None); save(s); return
+    if not PREFIX: sys.exit("SHELLS_IPV6_PREFIX is required")
+    net=ipaddress.ip_network(PREFIX,strict=False)
+    if net.version!=6 or net.prefixlen>112: sys.exit("prefix must be IPv6 /112 or larger address pool")
+    if args.count<1 or args.count>256: sys.exit("count must be 1..256")
+    used={ip for ips in s["allocations"].values() for ip in ips}
+    current=s["allocations"].get(aid,[])
+    need=args.count-len(current)
+    if need>0:
+        # Reserve the first 16 host IDs for node/infrastructure use.
+        start=int(net.network_address)+16
+        end=int(net.broadcast_address)
+        for n in range(start,end+1):
+            ip=str(ipaddress.IPv6Address(n))
+            if ip not in used:
+                current.append(ip); used.add(ip); need-=1
+                if need==0: break
+    if need: sys.exit("IPv6 pool exhausted")
+    s["allocations"][aid]=current[:args.count]; save(s)
+    for ip in s["allocations"][aid]: print(ip)
+if __name__=="__main__": main()
