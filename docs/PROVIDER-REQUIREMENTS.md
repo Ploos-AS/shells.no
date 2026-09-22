@@ -10,12 +10,24 @@ Shells.no is designed to start small on inexpensive VPS nodes and scale horizont
 - at least one public IPv4 address per production node
 - native IPv6 with multiple simultaneously usable source addresses
 - KVM or equivalent isolation suitable for modern Linux
-- Debian-compatible Linux and cgroups v2
+- Debian is the preferred and reference VPS operating system
+- Ubuntu LTS is the secondary fallback only when Debian is unavailable or unsupported by the provider
+- cgroups v2 and systemd
 - customer workloads can run with the Shells.no isolation model
 - abuse reports provide a workable operational process
 - no prohibition on our managed/containerized multi-user model
 
 A provider that fails a hard requirement is not production-qualified.
+
+## Operating system policy
+
+Provider qualification should record available OS images explicitly:
+
+1. **Debian stable** — preferred for production Shells.no nodes.
+2. **Ubuntu LTS** — supported fallback when the provider cannot supply a suitable Debian image.
+3. Other distributions are not part of the initial production baseline.
+
+Provider convenience must not silently move a node from Debian to Ubuntu. The fallback is an explicit deployment decision.
 
 ## Strong preferences
 
