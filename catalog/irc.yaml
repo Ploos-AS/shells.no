@@ -59,6 +59,17 @@ services:
     category: bot
     persistence: systemd-user
     status: planned
+  - id: limnoria
+    name: Limnoria
+    category: bot
+    persistence: systemd-user
+    status: planned
+  - id: sopel
+    name: Sopel
+    category: bot
+    persistence: systemd-user
+    status: planned
+
   - id: psotnic
     name: Psotnic
     category: bot
