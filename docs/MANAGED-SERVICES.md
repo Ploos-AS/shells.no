@@ -16,3 +16,8 @@ ZNC is the first executable reference implementation. Other catalog entries rema
 The host supplies the binary while the service runs as the customer Unix account under its systemd user manager. Linger provides persistence after SSH logout. The unit uses restart-on-failure, NoNewPrivileges, a private temporary directory and read-only system paths. Account CPU, memory and PID limits remain enforced by user-UID.slice.
 
 Before ZNC becomes qualified it must pass real VPS tests for configuration, lifecycle, reboot persistence, reconnect, IPv4, explicitly bound IPv6, resource limits, logging, backup and restore. The same lifecycle will then be extended to the remaining bouncers and bots.
+
+
+## Legacy service: shroudBNC
+
+shroudBNC (sBNC) is represented by `services/shroudbnc.env` and uses the same lifecycle interface. It remains unqualified until its source/build chain, Tcl dependencies, configuration paths, network binding, persistence and security behavior have passed enhanced qualification on the Debian reference node.
